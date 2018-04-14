@@ -1,78 +1,22 @@
 <?php
 
-interface Dough {
-    function doughType();
-}
-
-class ThickCrustDough implements Dough {
-    function doughType() {
-        echo "ThickCrustDough", PHP_EOL;
-    }
-}
-
-class ThinCrustDough implements Dough {
-    function doughType() {
-        echo "ThinCrustDough", PHP_EOL;
-    }
-}
-
-interface Sauce {
-    function sauceType();
-}
-
-class MarinaraSauce implements Sauce {
-    function sauceType() {
-        echo "MarinaraSauce", PHP_EOL;
-    }
-}
-
-class PlumTomatoSauce implements Sauce {
-    function sauceType() {
-        echo "PlumTomatoSauce", PHP_EOL;
-    }
-}
-
-interface PizzaIngredientFactory {
-    function createDough();
-    function createSauce();
-}
+// 单例模式
+// 确保一个类只有一个实例，并提供了一个全局访问点。
 
 
-class NYPizzaIngredientFactory implements PizzaIngredientFactory{
-    function createDough() {
-        return new ThickCrustDough();
+class Singleton {
+
+    private static $uniqueInstance;
+
+    private Singleton() {
     }
 
-    function createSauce() {
-        return new MarinaraSauce();
-    }
-}
-
-class ChicagoPizzaIngredientFactory implements PizzaIngredientFactory{
-    function createDough() {
-        return new ThinCrustDough();
-    }
-
-    function createSauce() {
-        return new PlumTomatoSauce();
-    }
-}
-
-class NYPizzaStore {
-    private $ingredientFactory;
-
-    function NYPizzaStore() {
-        $this->ingredientFactory = new NYPizzaIngredientFactory();
-    }
-
-    function makePizza() {
-        $dough = $this->ingredientFactory->createDough();
-        $sauce = $this->ingredientFactory->createSauce();
-        $dough->doughType();
-        $sauce->sauceType();
+    static function getUniqueInstance() {
+        if ($this->uniqueInstance == null) {
+            $this->uniqueInstance = new Singleton();
+        }
+        return $this->uniqueInstance;
     }
 }
 
 
-$nyPizzaStore = new NYPizzaStore();
-$nyPizzaStore->makePizza();
